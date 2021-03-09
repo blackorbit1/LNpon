@@ -24,7 +24,7 @@ if (isset($_POST['create'])
     && isset($_POST['mail'])) {
 
     $stmt = $dbh->prepare('INSERT INTO users (pseudo, mdp, mail) VALUES (?, ?, ?)');
-    $stmt->bindParam(1, $_POST['pseudo'], PDO::PARAM_STR, 100);
+    $stmt->bindParam(1, $_POST['p&seudo'], PDO::PARAM_STR, 100);
     $stmt->bindParam(2, password_hash($_POST['mdp'], PASSWORD_ARGON2ID), PDO::PARAM_STR);
     $stmt->bindParam(3, $_POST['mail'], PDO::PARAM_STR);
     $res = $stmt->execute();
