@@ -5,7 +5,7 @@ CREATE TABLE posts (
     texte text,
     date_ajout date,
     id_user int,
-    likes int, -- là on a dit qu'on ferait pas comme ça parce que sinon tout le monde pourrait mettre autant de likes qu'il veut
+    likes int default 0, -- là on a dit qu'on ferait pas comme ça parce que sinon tout le monde pourrait mettre autant de likes qu'il veut
     deleted boolean default false,
 
     PRIMARY KEY (id)
