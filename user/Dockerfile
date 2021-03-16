@@ -1,14 +1,11 @@
 # https://hub.docker.com/_/php
 FROM debian
 
-RUN apt-get update && apt-get install -y apt-utils
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y nginx-light
 RUN apt-get install -y postgresql
 RUN apt-get install -y php7.3-fpm php7.3-pgsql
-
-# https://stackoverflow.com/questions/44983961/installing-postgres-driver-in-php7-fpm-docker-container
-#RUN apt-get install -y libpq-dev
 
 ### Copy static files
 
@@ -16,6 +13,9 @@ COPY index.php /var/www/
 COPY init.sql /tmp/
 COPY nginx/lnpon.conf /etc/nginx/sites-available/lnpon.conf
 RUN ln -s /etc/nginx/sites-available/lnpon.conf /etc/nginx/sites-enabled/
+
+#RUN rm /var/log/nginx/error.log &&\
+#    ln -s /dev/stdout /var/log/nginx/error.log
 
 ### Configure Postgresql
 
@@ -25,9 +25,9 @@ RUN /etc/init.d/postgresql start &&\
 
 ### Starting services
 
-CMD /etc/init.d/postgresql start &&\
-    /etc/init.d/nginx start &&\
-    cat /var/log/nginx/error.log
+USER root
+CMD /etc/init.d/nginx start &&\
+    /etc/init.d/postgresql start
 
 # utilisation de php 8
 # wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg

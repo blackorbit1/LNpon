@@ -2,6 +2,7 @@ version: "3"
 services:
   users:
     build: ./user
+    #tty: true
     #restart: always
     restart: unless-stopped
     ports:
@@ -10,3 +11,5 @@ services:
       - "5432:5432"
     #env_file:
       #- ./web_dockerfile/.env
+    #volumes:
+    #  - ./data/sessions:/sessions
