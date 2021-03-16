@@ -1,10 +1,13 @@
-DROP DATABASE IF EXISTS lnpon;
+DROP DATABASE IF EXISTS users_db;
+DROP TABLE IF EXISTS users;
 DROP ROLE IF EXISTS "www-data";
 
-CREATE ROLE "www-data" WITH LOGIN;
-CREATE DATABASE "lnpon" OWNER "www-data";
+CREATE ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
+CREATE DATABASE "users_db" OWNER "www-data";
 
-DROP TABLE IF EXISTS users;
+\c users_db
+
+-- verifier que la table appartient bien à www-data (inherit from database ow)
 CREATE TABLE users (
     id       SERIAL      PRIMARY KEY,
     pseudo   varchar(50) NOT NULL UNIQUE,

@@ -2,37 +2,32 @@
 FROM debian
 
 RUN apt-get update && apt-get install -y apt-utils
-###### Configuration PHP
 
-RUN apt-get install -y nginx php7.3-fpm
+RUN apt-get install -y nginx-light
+RUN apt-get install -y postgresql
+RUN apt-get install -y php7.3-fpm php7.3-pgsql
 
 # https://stackoverflow.com/questions/44983961/installing-postgres-driver-in-php7-fpm-docker-container
-RUN apt-get install -y libpq-dev
+#RUN apt-get install -y libpq-dev
 
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-RUN docker-php-ext-install pdo pdo_pgsql
-
-COPY nginx/lnpon.conf /etc/nginx/site-available/lnpon.conf
-COPY nginx/gateway_headers.conf /etc/nginx/snippets/gateway_headers.conf
-
-RUN ln -s /etc/nginx/site-available/lnpon.conf /etc/nginx/site-enabled/
-
-# https://www.postgresql.org/download/linux/ubuntu/
-RUN apt-get -y install postgresql
+### Copy static files
 
 COPY index.php /var/www/
-COPY init.sql /var/www/
+COPY init.sql /tmp/
+COPY nginx/lnpon.conf /etc/nginx/sites-available/lnpon.conf
+RUN ln -s /etc/nginx/sites-available/lnpon.conf /etc/nginx/sites-enabled/
 
-###### Configuration Postgresql
+### Configure Postgresql
 
 USER postgres
 RUN /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER \"www-data\" WITH PASSWORD 'www-data';" &&\
-    createdb -O "www-data" user_db &&\
-    psql -d user_db -c "\i /var/www/init.sql"
+    psql -d postgres -c "\i /tmp/init.sql"
 
-# docker run -t -d lnpon_users /bin/bash
-CMD /etc/init.d/nginx start && /etc/init.d/postgresql start && bash
+### Starting services
+
+CMD /etc/init.d/postgresql start &&\
+    /etc/init.d/nginx start &&\
+    cat /var/log/nginx/error.log
 
 # utilisation de php 8
 # wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg

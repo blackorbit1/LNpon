@@ -1,10 +1,9 @@
 DROP TABLE IF EXISTS images;
 CREATE TABLE images (
-    id serial,
-    user_id bigint,
-    chemin varchar(100) UNIQUE,
-    nature int,
+    id SERIAL           PRIMARY KEY,
+    user_id int         NOT NULL,
+    chemin varchar(100) NOT NULL,
+    nature int          NOT NULL,
 
-    PRIMARY KEY (id)
 );
 
