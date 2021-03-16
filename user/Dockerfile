@@ -34,3 +34,6 @@ RUN /etc/init.d/postgresql start &&\
 # docker run -t -d lnpon_users /bin/bash
 CMD /etc/init.d/nginx start && /etc/init.d/postgresql start && bash
 
+# utilisation de php 8
+# wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+# echo "deb https://packages.sury.org/php/ buster main" |tee /etc/apt/sources.list.d/php.list
