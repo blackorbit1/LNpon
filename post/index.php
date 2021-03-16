@@ -1,11 +1,25 @@
 <?php
 
-$host = 'localhost';
-$dbname = 'user_db';
-$username = 'www-data';
-$password = 'www-data';
+$TESTS = true;
+
+if($TESTS){
+    $db_type = 'mysql';
+    $host = 'localhost';
+    $dbname = 'post_db';
+    $username = 'root';
+    $password = 'root';
+    $port = '8889';
+} else {
+    $db_type = 'pgsql';
+    $host = 'localhost';
+    $dbname = 'post_db';
+    $username = 'www-data';
+    $password = 'www-data';
+    $port = '5432';
+}
+
  
-$dsn = "pgsql:host=$host;port=5432;dbname=$dbname;user=$username;password=$password";
+$dsn = "$db_type:host=$host;port=$port;dbname=$dbname;user=$username;password=$password";
 
 $dbh = null;
 try {
@@ -23,12 +37,12 @@ if (isset($_POST['add'])
     && isset($_POST['texte'])
     && isset($_POST['id_user'])) {
 
-    $stmt = $dbh->prepare('INSERT INTO posts (nature, texte, date_ajout, id_user) VALUES (?, ?, NOW(), ?)');
-    $stmt->bindParam(1, $_POST['nature'], PDO::PARAM_INT);
-    $stmt->bindParam(2, $_POST['texte'], PDO::PARAM_STR);
-    $stmt->bindParam(3, $_POST['id_user'], PDO::PARAM_INT);
+    $stmt = $dbh->prepare('INSERT INTO posts (nature, texte, date_ajout, id_user) VALUES (:nature, :texte, NOW(), :id_user)');
+    $stmt->bindParam(':nature', $_POST['nature'], PDO::PARAM_INT);
+    $stmt->bindParam(':texte', $_POST['texte'], PDO::PARAM_STR);
+    $stmt->bindParam(':id_user', $_POST['id_user'], PDO::PARAM_INT);
     // retourne true if success, false sinon
-    $res = $stmt->execute();
+    $res = $stmt->execute() ? "succes" : "echec : " . json_encode($stmt->errorInfo());
 
 } else if (isset($_POST['remove'])
     && isset($_POST['id_post'])) {
@@ -97,6 +111,8 @@ if (isset($_POST['add'])
     } else {
         $res = "ERREUR SQL";
     }
+} else {
+    $res = "AUCUNE ACTION DISPONIBLE POUR CETTE REQUETE";
 }
 ?>
 
@@ -110,6 +126,6 @@ if (isset($_POST['add'])
     <title>Index</title>
 </head>
 <body>
-    <? $res ?>
+    <?php echo $res ?>
 </body>
 </html>

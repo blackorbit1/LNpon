@@ -1,7 +1,7 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'user_db';
+$dbname = 'reactions_db';
 $username = 'www-data';
 $password = 'www-data';
  
