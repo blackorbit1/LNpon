@@ -80,12 +80,12 @@ if (isset($_POST['add'])
         $result = array();
 
         foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $tmp){
-            $result[$tmp["id_post"]] = array();
-            $result[$tmp["id_post"]]["id_post"] = $tmp["id"];
-            $result[$tmp["id_post"]]["nature"] = $tmp["nature"];
-            $result[$tmp["id_post"]]["texte"] = $tmp["texte"];
-            $result[$tmp["id_post"]]["date_ajout"] = $tmp["date_ajout"];
-            $result[$tmp["id_post"]]["likes"] = $tmp["likes"];
+            $result[$tmp["id"]] = array();
+            $result[$tmp["id"]]["id_post"] = $tmp["id"];
+            $result[$tmp["id"]]["nature"] = $tmp["nature"];
+            $result[$tmp["id"]]["texte"] = $tmp["texte"];
+            $result[$tmp["id"]]["date_ajout"] = $tmp["date_ajout"];
+            $result[$tmp["id"]]["likes"] = $tmp["likes"];
         }
         $res = json_encode($result);
     } else {
@@ -100,12 +100,12 @@ if (isset($_POST['add'])
         $result = array();
         
         foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $tmp){
-            $result[$tmp["id_post"]] = array();
-            $result[$tmp["id_post"]]["nature"] = $tmp["nature"];
-            $result[$tmp["id_post"]]["texte"] = $tmp["texte"];
-            $result[$tmp["id_post"]]["date_ajout"] = $tmp["date_ajout"];
-            $result[$tmp["id_post"]]["id_user"] = $tmp["id_user"];
-            $result[$tmp["id_post"]]["likes"] = $tmp["likes"];
+            $result[$tmp["id"]] = array();
+            $result[$tmp["id"]]["nature"] = $tmp["nature"];
+            $result[$tmp["id"]]["texte"] = $tmp["texte"];
+            $result[$tmp["id"]]["date_ajout"] = $tmp["date_ajout"];
+            $result[$tmp["id"]]["id_user"] = $tmp["id_user"];
+            $result[$tmp["id"]]["likes"] = $tmp["likes"];
         }
         $res = json_encode($result);
     } else {
