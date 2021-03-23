@@ -1,6 +1,6 @@
 <?php
 
-$TESTS = true;
+$TESTS = false;
 
 if($TESTS){
     $db_type = 'mysql';
