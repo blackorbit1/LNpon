@@ -9,7 +9,7 @@ services:
     restart: always
     container_name: post_postgres
     ports:
-      - 2100:5432
+      - 5437:5432
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     environment:
@@ -19,21 +19,15 @@ services:
   post_php:
     image: php:fpm
     container_name: post_php
-    networks:
-      - "post_network"
     ports:
-      - 9000:9000
+      - 9005:9000
   post_nginx:
     image: nginx:stable
     container_name: post_nginx
-    networks:
-      - "post_network"
     ports:
-      - 85:80
-      - 448:443
+      - 8085:80
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
-      - ./nginx/default:/etc/nginx/sites-available/
     depends_on:
       - post_php

@@ -6,7 +6,7 @@ services:
     restart: always
     container_name: user_postgres
     ports:
-      - 2100:5432
+      - 5440:5432
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     environment:
@@ -17,16 +17,14 @@ services:
     image: php:fpm
     container_name: user_php
     ports:
-      - 9000:9000
+      - 9008:9000
   users_nginx:
     image: nginx:stable
     container_name: user_nginx
     ports:
-      - 88:80
-      - 451:443
+      - 8088:80
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
-      - ./nginx/default:/etc/nginx/sites-available/
     depends_on:
       - users_php
