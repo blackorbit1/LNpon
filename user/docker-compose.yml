@@ -5,19 +5,20 @@ services:
     image: postgres:13.2
     restart: always
     container_name: user_postgres
-    ports:
-      - 5440:5432
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     environment:
       POSTGRES_DB: 'user_db'
       POSTGRES_USER: 'www-data'
       POSTGRES_PASSWORD: 'www-data'
+    networks:
+      - users_backend
   users_php:
     image: php:fpm
     container_name: user_php
-    ports:
-      - 9008:9000
+    networks:
+      - users_frontend
+      - users_backend
   users_nginx:
     image: nginx:stable
     container_name: user_nginx
@@ -26,5 +27,7 @@ services:
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - users_frontend
     depends_on:
       - users_php
