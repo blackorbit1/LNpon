@@ -1,26 +1,24 @@
 version: "3"
 
-networks:
-  post_network:
-
 services:
   post_db:
     image: postgres:13.2
     restart: always
     container_name: post_postgres
-    ports:
-      - 5437:5432
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     environment:
       POSTGRES_DB: 'post_db'
       POSTGRES_post: 'www-data'
       POSTGRES_PASSWORD: 'www-data'
+    networks:
+      - post_backend
   post_php:
     image: php:fpm
     container_name: post_php
-    ports:
-      - 9005:9000
+    networks:
+      - post_backend
+      - post_frontend
   post_nginx:
     image: nginx:stable
     container_name: post_nginx
@@ -29,5 +27,7 @@ services:
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - post_frontend
     depends_on:
       - post_php
