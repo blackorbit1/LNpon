@@ -7,10 +7,8 @@ services:
     container_name: user_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
-    environment:
-      POSTGRES_DB: 'user_db'
-      POSTGRES_USER: 'www-data'
-      POSTGRES_PASSWORD: 'www-data'
+    env_file:
+      - ./environment/prod.env
     networks:
       - users_backend
   users_php:
