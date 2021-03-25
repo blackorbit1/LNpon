@@ -29,3 +29,7 @@ services:
       - users_frontend
     depends_on:
       - users_php
+
+networks:
+  users_frontend:
+  users_backend:
