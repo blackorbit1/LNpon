@@ -3,14 +3,11 @@ version: "3"
 services:
   post_db:
     image: postgres:13.2
-    restart: always
     container_name: post_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
-    environment:
-      POSTGRES_DB: 'post_db'
-      POSTGRES_post: 'www-data'
-      POSTGRES_PASSWORD: 'www-data'
+    env_file:
+      - ./environment/prod.env
     networks:
       - post_backend
   post_php:
@@ -31,3 +28,8 @@ services:
       - post_frontend
     depends_on:
       - post_php
+
+networks:
+  post_frontend:
+  post_backend:
+
