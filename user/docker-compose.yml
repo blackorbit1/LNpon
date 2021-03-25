@@ -3,7 +3,6 @@ version: "3"
 services:
   users_db:
     image: postgres:13.2
-    restart: always
     container_name: user_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
