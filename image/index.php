@@ -18,7 +18,7 @@ try {
 }
 
 $res = null;
-if (isset($_POST['create'])
+if (isset($_POST['create']) // TODO : il faut aussi surement gerer la recupération d'un fichier
     && isset($_POST['user_id'])
     && isset($_POST['chemin'])
     && isset($_POST['nature'])) {
