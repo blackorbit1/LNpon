@@ -3,7 +3,7 @@ version: "3"
 services:
   users_db:
     image: postgres:13.2
-    container_name: user_postgres
+    container_name: users_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     env_file:
@@ -12,13 +12,13 @@ services:
       - users_backend
   users_php:
     image: php:fpm
-    container_name: user_php
+    container_name: users_php
     networks:
       - users_frontend
       - users_backend
   users_nginx:
     image: nginx:stable
-    container_name: user_nginx
+    container_name: users_nginx
     ports:
       - 8088:80
     volumes:
