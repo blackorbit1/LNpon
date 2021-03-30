@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  auth_db:
+    image: postgres:13.2
+    container_name: auth_postgres
+    volumes:
+      - ./postgresql/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./environment/prod.env
+    networks:
+      - auth_backend
+    depends_on:
+      - auth_nginx
+  auth_php:
+    image: php:fpm
+    container_name: auth_php
+    networks:
+      - auth_frontend
+      - auth_backend
+  auth_nginx:
+    image: nginx:stable
+    container_name: auth_nginx
+    ports:
+      - 8083:80
+    volumes:
+      - ./static:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - auth_frontend
+    depends_on:
+      - auth_php
+
+networks:
+  auth_frontend:
+  auth_backend:
