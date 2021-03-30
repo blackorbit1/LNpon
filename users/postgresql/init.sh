@@ -1,6 +1,7 @@
 #!/bin/env bash
 set -e
 
+useradd www-data
 su www-data
 
 psql -v ON_ERROR_STOP=1 <<-EOSQL
