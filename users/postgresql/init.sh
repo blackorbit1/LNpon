@@ -12,7 +12,7 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
     CREATE ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
     CREATE DATABASE "users_db" OWNER "www-data";
 
-    \c relations_db
+    \c users_db
 
     -- verifier que la table appartient bien à www-data (inherit from database ow)
     CREATE TABLE users (
