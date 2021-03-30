@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  images_db:
+    image: postgres:13.2
+    container_name: images_postgres
+    volumes:
+      - ./postgresql/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./environment/prod.env
+    networks:
+      - images_backend
+    depends_on:
+      - images_nginx
+  images_php:
+    image: php:fpm
+    container_name: images_php
+    networks:
+      - images_backend
+      - images_frontend
+  images_nginx:
+    image: nginx:stable
+    container_name: images_nginx
+    ports:
+      - 8085:80
+    volumes:
+      - ./static:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - images_frontend
+    depends_on:
+      - images_php
+
+networks:
+  images_frontend:
+  images_backend:
+
