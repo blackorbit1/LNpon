@@ -1,35 +1,37 @@
 version: "3"
 
 services:
-  post_db:
+  posts_db:
     image: postgres:13.2
-    container_name: post_postgres
+    container_name: posts_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
     env_file:
       - ./environment/prod.env
     networks:
-      - post_backend
-  post_php:
+      - posts_backend
+    depends_on:
+      - posts_nginx
+  posts_php:
     image: php:fpm
     container_name: post_php
     networks:
       - post_backend
       - post_frontend
-  post_nginx:
+  posts_nginx:
     image: nginx:stable
-    container_name: post_nginx
+    container_name: posts_nginx
     ports:
       - 8085:80
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
     networks:
-      - post_frontend
+      - posts_frontend
     depends_on:
-      - post_php
+      - posts_php
 
 networks:
-  post_frontend:
-  post_backend:
+  posts_frontend:
+  posts_backend:
 
