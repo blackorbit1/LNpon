@@ -5,14 +5,14 @@ $TESTS = false;
 if($TESTS){
     $db_type = 'mysql';
     $host = 'localhost';
-    $dbname = 'posts_db';
+    $dbname = 'reactions_db';
     $username = 'root';
     $password = 'root';
     $port = '8889';
 } else {
     $db_type = 'pgsql';
     $host = 'localhost';
-    $dbname = 'posts_db';
+    $dbname = 'reactions_db';
     $username = 'www-data';
     $password = 'www-data';
     $port = '5432';
