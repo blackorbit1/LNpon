@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  groupes_db:
+    image: postgres:13.2
+    container_name: groupes_postgres
+    volumes:
+      - ./postgresql/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./environment/prod.env
+    networks:
+      - groupes_backend
+    depends_on:
+      - groupes_nginx
+  groupes_php:
+    image: php:fpm
+    container_name: groupes_php
+    networks:
+      - groupes_frontend
+      - groupes_backend
+  groupes_nginx:
+    image: nginx:stable
+    container_name: groupes_nginx
+    ports:
+      - 8084:80
+    volumes:
+      - ./static:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - groupes_frontend
+    depends_on:
+      - groupes_php
+
+networks:
+  groupes_frontend:
+  groupes_backend:
