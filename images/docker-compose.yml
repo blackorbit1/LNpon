@@ -22,7 +22,7 @@ services:
     image: nginx:stable
     container_name: images_nginx
     ports:
-      - 8085:80
+      - 8084:80
     volumes:
       - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
