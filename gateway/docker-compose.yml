@@ -7,4 +7,8 @@ services:
     ports:
       - 80:80
     volumes:
+      - ./static:/var/www/
       - ./nginx/:/etc/nginx/conf.d/
+  gateway_php:
+    image: php:fpm
+    container_name: gateway_php
