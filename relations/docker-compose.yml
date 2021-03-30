@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  relations_db:
+    image: postgres:13.2
+    container_name: relations_postgres
+    volumes:
+      - ./postgresql/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./environment/prod.env
+    networks:
+      - relations_backend
+    depends_on:
+      - relations_nginx
+  relations_php:
+    image: php:fpm
+    container_name: relations_php
+    networks:
+      - relations_frontend
+      - relations_backend
+  relations_nginx:
+    image: nginx:stable
+    container_name: relations_nginx
+    ports:
+      - 8087:80
+    volumes:
+      - ./static:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - relations_frontend
+    depends_on:
+      - relations_php
+
+networks:
+  relations_frontend:
+  relations_backend:
