@@ -10,6 +10,8 @@ services:
       - ./environment/prod.env
     networks:
       - users_backend
+    depends_on:
+      - users_nginx
   users_php:
     image: php:fpm
     container_name: users_php
