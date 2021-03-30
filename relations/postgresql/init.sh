@@ -9,9 +9,9 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
     DROP ROLE IF EXISTS "www-data";
 
     CREATE ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
-    CREATE DATABASE "users_db" OWNER "www-data";
+    CREATE DATABASE "relations_db" OWNER "www-data";
 
-    \c users_db
+    \c relations_db
 
     -- verifier que la table appartient bien à www-data (inherit from database ow)
     CREATE TABLE relations (
