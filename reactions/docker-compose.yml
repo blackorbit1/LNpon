@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  reactions_db:
+    image: postgres:13.2
+    container_name: reactions_postgres
+    volumes:
+      - ./postgresql/:/docker-entrypoint-initdb.d/
+    env_file:
+      - ./environment/prod.env
+    networks:
+      - reactions_backend
+    depends_on:
+      - reactions_nginx
+  reactions_php:
+    image: php:fpm
+    container_name: reactions_php
+    networks:
+      - reactions_frontend
+      - reactions_backend
+  reactions_nginx:
+    image: nginx:stable
+    container_name: reactions_nginx
+    ports:
+      - 8086:80
+    volumes:
+      - ./static:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - reactions_frontend
+    depends_on:
+      - reactions_php
+
+networks:
+  reactions_frontend:
+  reactions_backend:
