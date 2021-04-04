@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 useradd www-data
@@ -14,12 +14,11 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
 
     \c images_db
 
-    DROP TABLE IF EXISTS images;
     CREATE TABLE images (
         id SERIAL           PRIMARY KEY,
         user_id int         NOT NULL,
         chemin varchar(100) NOT NULL,
-        nature int          NOT NULL,
+        nature int          NOT NULL
     );
 
 EOSQL

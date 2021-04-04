@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 useradd www-data
@@ -14,17 +14,13 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
 
     \c reactions_db
 
-    -- verifier que la table appartient bien à www-data (inherit from database ow)    
+    -- verifier que la table appartient bien à www-data (inherit from database owner)
     CREATE TABLE reactions (
-        id bigint,
-        emoji varchar(10) UNIQUE,
+        id      SERIAL PRIMARY KEY,
+        emoji   varchar(10) UNIQUE,
         id_user int,
         id_post int,
-        deleted boolean default false,
-
-        PRIMARY KEY (id)
+        deleted boolean DEFAULT false
     );
-
-
 
 EOSQL

@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 useradd www-data
@@ -16,25 +16,22 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
 
     \c groupes_db
 
-    -- verifier que la table appartient bien à www-data (inherit from database ow)    
+    -- verifier que la table appartient bien à www-data (inherit from database owner)
     CREATE TABLE groupes (
         id SERIAL       PRIMARY KEY,
-        admin_id bigint NOT NULL,
-        
+        admin_id bigint NOT NULL
     );
+
     CREATE TABLE groupes_members (
         id SERIAL       PRIMARY KEY,
         user_id bigint  NOT NULL,
-        group_id bigint NOT NULL,
-
+        group_id bigint NOT NULL
     );
+
     CREATE TABLE groupes_posts (
         id SERIAL       PRIMARY KEY,
         post_id bigint  NOT NULL,
-        group_id bigint NOT NULL,
+        group_id bigint NOT NULL
     );
-
-
-
 
 EOSQL

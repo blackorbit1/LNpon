@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 useradd www-data
@@ -16,11 +16,10 @@ psql -v ON_ERROR_STOP=1 <<-EOSQL
 
     -- verifier que la table appartient bien à www-data (inherit from database ow)
     CREATE TABLE auth (
-        id              SERIAL      PRIMARY KEY,
-        id_user         int         NOT NULL,
-        token           int         NOT NULL UNIQUE,
-        date_expiration date        NOT NULL,
-        password        text        NOT NULL
+        id              SERIAL PRIMARY KEY,
+        id_user         int    NOT NULL,
+        token           int    NOT NULL UNIQUE,
+        date_expiration date   NOT NULL DEFAULT now() + '1 hour'::interval
     );
 
 EOSQL
