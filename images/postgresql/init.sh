@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -e
 
-useradd www-data
-su www-data
+useradd postgres
+su postgres
 
 psql -v ON_ERROR_STOP=1 <<-EOSQL
     DROP DATABASE IF EXISTS images_db;
     DROP TABLE IF EXISTS images;
-    DROP ROLE IF EXISTS "www-data";
+    DROP ROLE IF EXISTS "postgres";
 
-    CREATE ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
-    CREATE DATABASE "images_db" OWNER "www-data";
+    CREATE ROLE "postgres" WITH LOGIN PASSWORD 'postgres';
+    CREATE DATABASE "images_db" OWNER "postgres";
 
     \c images_db
 

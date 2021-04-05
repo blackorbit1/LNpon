@@ -6,18 +6,12 @@ services:
     container_name: posts_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
-    #environment:
-      #- PGDATA: /var/lib/postgresql/data/
-      #- POSTGRES_USER=www-data
-      #- POSTGRES_PASSWORD=www-data
     env_file:
       - ./environment/prod.env
     networks:
       - posts_backend
     depends_on:
       - posts_nginx
-    ports:
-      - 5432:5432
   posts_php:
     build: ./php
     container_name: post_php

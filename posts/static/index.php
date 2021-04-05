@@ -2,8 +2,6 @@
 
 require_once 'db.php';
 
-//echo "res : " . ((isset($_GET['get']) && isset($_GET['id_post']))?"true":"false");
-
 $res = null;
 if (isset($_POST['add'])
     && isset($_POST['nature'])
@@ -88,16 +86,4 @@ if (isset($_POST['add'])
 }
 ?>
 
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Index</title>
-</head>
-<body>
-    <?php echo $res ?>
-</body>
-</html>
+<?php echo $res ?>

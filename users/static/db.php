@@ -11,10 +11,10 @@ if($TESTS){
     $port = '8889';
 } else {
     $db_type = 'pgsql';
-    $host = 'localhost';
+    $host = 'users_db';
     $dbname = 'users_db';
-    $username = 'www-data';
-    $password = 'www-data';
+    $username = 'postgres';
+    $password = 'postgres';
     $port = '5432';
 }
 

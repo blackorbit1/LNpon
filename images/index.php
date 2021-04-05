@@ -2,8 +2,8 @@
 
 $host = 'localhost';
 $dbname = 'image_db';
-$username = 'www-data';
-$password = 'www-data';
+$username = 'postgres';
+$password = 'postgres';
  
 $dsn = "pgsql:host=$host;port=5432;dbname=$dbname;user=$username;password=$password";
 

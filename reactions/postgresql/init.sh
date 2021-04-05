@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
-useradd www-data
-su www-data
+useradd postgres
+su postgres
 
 psql -v ON_ERROR_STOP=1 <<-EOSQL
     DROP DATABASE IF EXISTS reactions_db;
     DROP TABLE IF EXISTS reactions;
-    DROP ROLE IF EXISTS "www-data";
+    DROP ROLE IF EXISTS "postgres";
 
-    CREATE ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
-    CREATE DATABASE "reactions" OWNER "www-data";
+    CREATE ROLE "postgres" WITH LOGIN PASSWORD 'postgres';
+    CREATE DATABASE "reactions" OWNER "postgres";
 
     \c reactions_db
 
-    -- verifier que la table appartient bien à www-data (inherit from database owner)
+    -- verifier que la table appartient bien à postgres (inherit from database owner)
     CREATE TABLE reactions (
         id      SERIAL PRIMARY KEY,
         emoji   varchar(10) UNIQUE,
