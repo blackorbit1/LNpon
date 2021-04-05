@@ -6,18 +6,26 @@ services:
     container_name: posts_postgres
     volumes:
       - ./postgresql/:/docker-entrypoint-initdb.d/
+    #environment:
+      #- PGDATA: /var/lib/postgresql/data/
+      #- POSTGRES_USER=www-data
+      #- POSTGRES_PASSWORD=www-data
     env_file:
       - ./environment/prod.env
     networks:
       - posts_backend
     depends_on:
       - posts_nginx
+    ports:
+      - 5432:5432
   posts_php:
-    image: php:fpm
+    build: ./php
     container_name: post_php
     networks:
       - posts_backend
       - posts_frontend
+    volumes:
+      - ./static/:/var/www/
   posts_nginx:
     image: nginx:stable
     container_name: posts_nginx
@@ -25,7 +33,7 @@ services:
       - 8085:80
     volumes:
       - ./static:/var/www/
-      - ./nginx/:/etc/nginx/conf.d/
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - posts_frontend
     depends_on:
@@ -34,4 +42,3 @@ services:
 networks:
   posts_frontend:
   posts_backend:
-

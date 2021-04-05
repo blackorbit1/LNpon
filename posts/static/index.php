@@ -2,6 +2,8 @@
 
 require_once 'db.php';
 
+//echo "res : " . ((isset($_GET['get']) && isset($_GET['id_post']))?"true":"false");
+
 $res = null;
 if (isset($_POST['add'])
     && isset($_POST['nature'])
@@ -26,7 +28,7 @@ if (isset($_POST['add'])
 } else if (isset($_GET['get']) // Pour reccuperer 1 post en particulier
 && isset($_GET['id_post'])) {
 
-    $stmt = $dbh->prepare('SELECT * FROM posts WHERE id_post = ? AND deleted = false');
+    $stmt = $dbh->prepare('SELECT * FROM posts WHERE id = ? AND deleted = false');
     $stmt->bindParam(1, $_GET['id_post'], PDO::PARAM_INT);
 
     if($stmt->execute()){ // si la requete a marché
@@ -65,7 +67,6 @@ if (isset($_POST['add'])
 } else if (isset($_GET['get'])) { // Pour reccuperer tous les posts non supprimés de la BDD
 
     $stmt = $dbh->prepare('SELECT * FROM posts WHERE deleted = false');
-    $stmt->bindParam(1, $_GET['id_user'], PDO::PARAM_INT);
 
     if($stmt->execute()){ // si la requete a marché
         $result = array();

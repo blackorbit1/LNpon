@@ -11,10 +11,10 @@ if($TESTS){
     $port = '8889';
 } else {
     $db_type = 'pgsql';
-    $host = 'localhost';
+    $host = 'posts_db';
     $dbname = 'posts_db';
-    $username = 'www-data';
-    $password = 'www-data';
+    $username = 'postgres';
+    $password = 'postgres';
     $port = '5432';
 }
 
@@ -23,7 +23,7 @@ $dbh = null;
 try {
     $dbh = new PDO($dsn);
     if($dbh) {
-        echo "Connecté à $dbname avec succès!";
+        //echo "Connecté à $dbname avec succès!";
     }
 } catch (PDOException $e) {
     echo $e->getMessage();
