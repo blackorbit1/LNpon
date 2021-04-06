@@ -14,7 +14,7 @@ services:
       - posts_nginx
   posts_php:
     build: ./php
-    container_name: post_php
+    container_name: posts_php
     networks:
       - posts_backend
       - posts_frontend
