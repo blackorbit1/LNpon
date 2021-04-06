@@ -1,5 +1,4 @@
 ALTER ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
-CREATE DATABASE auth_db OWNER "www-data";
 
 CREATE TABLE auth (
     id              SERIAL PRIMARY KEY,
