@@ -14,7 +14,7 @@ services:
       - users_nginx
   users_php:
     build: ./php
-    container_name: user_php
+    container_name: users_php
     networks:
       - users_backend
       - users_frontend

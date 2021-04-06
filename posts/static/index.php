@@ -13,7 +13,7 @@ if (isset($_POST['add'])
     $stmt->bindParam(':text_content', $_POST['text_content'], PDO::PARAM_STR);
     $stmt->bindParam(':id_user', $_POST['id_user'], PDO::PARAM_INT);
     // retourne true if success, false sinon
-    $res = $stmt->execute() ? "succes" : "echec : " . json_encode($stmt->errorInfo());
+    $res = ($stmt->execute() ? "succes" : "echec : " . json_encode($stmt->errorInfo()));
 
 } else if (isset($_POST['remove'])
     && isset($_POST['id_post'])) {

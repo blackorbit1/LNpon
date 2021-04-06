@@ -13,8 +13,8 @@ if($TESTS){
     $db_type = 'pgsql';
     $host = 'users_db';
     $dbname = 'users_db';
-    $username = 'postgres';
-    $password = 'postgres';
+    $username = 'www-data';
+    $password = 'www-data';
     $port = '5432';
 }
 
