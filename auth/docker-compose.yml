@@ -13,7 +13,7 @@ services:
     depends_on:
       - auth_nginx
   auth_php:
-    image: php:fpm
+    build: ./php
     container_name: auth_php
     networks:
       - auth_frontend
