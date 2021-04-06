@@ -8,7 +8,7 @@ Réseau social en micro services.
 - [ ] auth
 - [x] posts
 - [ ] images
-- [ ] reactions
+- [x] reactions
 - [ ] relations
 - [ ] groupes
 - [ ] gateway
