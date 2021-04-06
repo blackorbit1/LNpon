@@ -2,24 +2,20 @@
 
 require_once 'db.php';
 
-$res = null;
+
 if (isset($_POST['create'])
-    && isset($_POST['pseudo'])
-    && isset($_POST['mdp'])
-    && isset($_POST['mail'])) {
+    && !empty($_POST['pseudo'])
+    && !empty($_POST['password'])
+    && !empty($_POST['email'])) {
 
-    $password = password_hash($_POST['mdp'], PASSWORD_ARGON2ID);
+    $pseudo = $_POST['pseudo'];
+    $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+    $email = $_POST['email'];
 
-    $stmt = $dbh->prepare('INSERT INTO users (pseudo, mdp, mail) VALUES (?, ?, ?)');
-    $stmt->bindParam(1, $_POST['pseudo'], PDO::PARAM_STR, 100);
-    $stmt->bindParam(2, $password, PDO::PARAM_STR);
-    $stmt->bindParam(3, $_POST['mail'], PDO::PARAM_STR);
-    $res = $stmt->execute();
+    $stmt = $dbh->prepare('INSERT INTO users (pseudo, password, email) VALUES (?, ?, ?)');
+    $res = $stmt->execute([$pseudo, $password, $email]);
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -28,6 +24,6 @@ if (isset($_POST['create'])
     <title>Index</title>
 </head>
 <body>
-    <? $res ?>
+    <?= $res ?>
 </body>
 </html>
