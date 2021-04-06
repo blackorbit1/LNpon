@@ -3,25 +3,15 @@
 require_once 'db.php';
 
 
-$res = 'ok';
-/*
-if (isset($_POST['create'])
-    && isset($_POST['pseudo'])
-    && isset($_POST['mdp'])
-    && isset($_POST['mail'])) {
+if (isset($_POST['login'])
+    && !empty($_POST['pseudo'])
+    && !empty($_POST['password'])) {
 
-    $password = password_hash($_POST['mdp'], PASSWORD_ARGON2ID);
+    curl("users_nginx:8088/verify_user?pseudo=$_POST['pseudo']&password=$_POST['password']");
 
-    $stmt = $dbh->prepare('INSERT INTO auth (pseudo, mdp, mail) VALUES (?, ?, ?)');
-    $stmt->bindParam(1, $_POST['pseudo'], PDO::PARAM_STR, 100);
-    $stmt->bindParam(2, $password, PDO::PARAM_STR);
-    $stmt->bindParam(3, $_POST['mail'], PDO::PARAM_STR);
-    $res = $stmt->execute();
+    // TODO test curl return -> if true then generate token
 }
 ?>
-*/
-
-
 
 <!DOCTYPE html>
 <html>
@@ -30,6 +20,5 @@ if (isset($_POST['create'])
     <title>Index</title>
 </head>
 <body>
-    <? $res ?>
 </body>
 </html>
