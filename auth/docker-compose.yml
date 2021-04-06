@@ -25,7 +25,7 @@ services:
       - 8082:80
     volumes:
       - ./static:/var/www/
-      - ./nginx/:/etc/nginx/conf.d/
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - auth_frontend
     depends_on:

@@ -2,7 +2,9 @@
 
 require_once 'db.php';
 
-$res = null;
+
+$res = 'ok';
+/*
 if (isset($_POST['create'])
     && isset($_POST['pseudo'])
     && isset($_POST['mdp'])
@@ -17,7 +19,7 @@ if (isset($_POST['create'])
     $res = $stmt->execute();
 }
 ?>
-
+*/
 
 
 

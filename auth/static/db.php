@@ -11,7 +11,7 @@ if($TESTS){
     $port = '8889';
 } else {
     $db_type = 'pgsql';
-    $host = 'localhost';
+    $host = 'auth_db';
     $dbname = 'auth_db';
     $username = 'www-data';
     $password = 'www-data';
@@ -22,10 +22,8 @@ $dsn = "$db_type:host=$host;port=$port;dbname=$dbname;user=$username;password=$p
 $dbh = null;
 try {
     $dbh = new PDO($dsn);
-    if($dbh) {
-        echo "Connecté à $dbname avec succès!";
-    }
-} catch (PDOException $e) {
+}
+catch (PDOException $e) {
     echo $e->getMessage();
 }
 
