@@ -26,10 +26,10 @@ else if (isset($_POST['action'])
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
 
-    $stmt = $dbh->prepare('SELECT password FROM users WERE pseudo = ?');
+    $stmt = $dbh->prepare('SELECT password FROM users WHERE pseudo = ?');
     $res = $stmt->execute([$pseudo]);
 
-    if ($res) {
+    if ($res && $stmt->rowCount()) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $password_valid = password_verify($password, $row['password']);
 
