@@ -3,7 +3,8 @@
 require_once 'db.php';
 
 
-if (isset($_POST['create'])
+if (isset($_POST['action'])
+    && $_POST['action'] == 'create'
     && !empty($_POST['pseudo'])
     && !empty($_POST['password'])
     && !empty($_POST['email'])) {
@@ -14,16 +15,28 @@ if (isset($_POST['create'])
 
     $stmt = $dbh->prepare('INSERT INTO users (pseudo, password, email) VALUES (?, ?, ?)');
     $res = $stmt->execute([$pseudo, $password, $email]);
+
+    echo $res;
+}
+else if (isset($_POST['action'])
+         && $_POST['action'] == 'login'
+         && !empty($_POST['pseudo'])
+         && !empty($_POST['password'])) {
+
+    $pseudo = $_POST['pseudo'];
+    $password = $_POST['password'];
+
+    $stmt = $dbh->prepare('SELECT password FROM users WERE pseudo = ?');
+    $res = $stmt->execute([$pseudo]);
+
+    if ($res) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $password_valid = password_verify($password, $row['password']);
+
+        echo $password_valid ? 1 : 0;
+        exit();
+    }
+
+    echo 0;
 }
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Index</title>
-</head>
-<body>
-    <?= $res ?>
-</body>
-</html>
