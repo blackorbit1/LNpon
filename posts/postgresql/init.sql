@@ -1,5 +1,4 @@
 ALTER ROLE "www-data" WITH LOGIN PASSWORD 'www-data';
-CREATE DATABASE db_posts OWNER "www-data";
 
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
