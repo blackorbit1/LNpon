@@ -13,8 +13,10 @@ services:
     depends_on:
       - images_nginx
   images_php:
-    image: php:fpm
+    build: ./php
     container_name: images_php
+    volumes:
+      - ./static:/var/www/
     networks:
       - images_backend
       - images_frontend
