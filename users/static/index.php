@@ -33,7 +33,12 @@ else if (isset($_POST['action'])
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $password_valid = password_verify($password, $row['password']);
 
-        $output = ['status' => true, 'id_user' => $row['id_user'], 'pseudo' => $row['pseudo'], 'email' => $row['email']];
+        if ($password_valid) {
+            $output = ['status' => true, 'id_user' => $row['id_user'], 'pseudo' => $row['pseudo'], 'email' => $row['email']];
+        }
+        else {
+            $output = ['status' => false];
+        }
     }
     else {
         $output = ['status' => false];
