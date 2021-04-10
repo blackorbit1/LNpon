@@ -16,7 +16,7 @@ if (isset($_POST['action'])
     $stmt = $dbh->prepare('INSERT INTO users (pseudo, password, email) VALUES (?, ?, ?)');
     $res = $stmt->execute([$pseudo, $password, $email]);
 
-    $output = ['result' => $res ? true : false];
+    $output = ['status' => $res ? true : false];
 }
 else if (isset($_POST['action'])
          && $_POST['action'] == 'login'
@@ -33,10 +33,10 @@ else if (isset($_POST['action'])
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $password_valid = password_verify($password, $row['password']);
 
-        $output = ['result' => true, 'id_user' => $row['id_user'], 'pseudo' => $row['pseudo'], 'email' => $row['email']];
+        $output = ['status' => true, 'id_user' => $row['id_user'], 'pseudo' => $row['pseudo'], 'email' => $row['email']];
     }
     else {
-        $output = ['result' => false];
+        $output = ['status' => false];
     }
 }
 
