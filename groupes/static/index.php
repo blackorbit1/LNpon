@@ -25,7 +25,6 @@ if (isset($_POST['create'])
     $res = $stmt->execute();
 
 } else if (isset($_GET['get']) // Tous les groupes d'un admin
-    && isset($_GET['id_groupe'])
     && isset($_GET['admin_id'])) {
 
     $stmt = $dbh->prepare('SELECT * FROM groupes WHERE admin_id = ? AND deleted = false');
@@ -69,6 +68,7 @@ if (isset($_POST['create'])
 
 
 
+
 // MEMBRES GROUPE
 if (isset($_POST['add'])
     && isset($_POST['user_id'])
@@ -108,6 +108,7 @@ if (isset($_POST['add'])
         $res = "echec : " . json_encode($stmt->errorInfo());
     }
 } else if (isset($_GET['get']) // Get tous les users d'un groupe
+    && isset($_GET['users'])
     && isset($_GET['group_id'])) {
 
     $stmt = $dbh->prepare('SELECT user_id FROM groupes_members WHERE group_id = ? AND deleted = false');
@@ -168,6 +169,7 @@ if (isset($_POST['add'])
         $res = "echec : " . json_encode($stmt->errorInfo());
     }
 } else if (isset($_GET['get']) // Get tous les posts d'un groupe
+    && isset($_GET['posts'])
     && isset($_GET['group_id'])) {
 
     $stmt = $dbh->prepare('SELECT post_id FROM groupes_posts WHERE group_id = ? AND deleted = false');

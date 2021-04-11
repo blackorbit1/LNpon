@@ -10,7 +10,7 @@ Réseau social en micro services.
 - [ ] images
 - [x] reactions
 - [ ] relations
-- [ ] groupes
+- [x] groupes
 - [ ] gateway
 
 ## Installation

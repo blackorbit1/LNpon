@@ -10,13 +10,15 @@ CREATE TABLE groupes (
 CREATE TABLE groupes_members (
                                  id SERIAL       PRIMARY KEY,
                                  user_id bigint  NOT NULL,
-                                 group_id bigint NOT NULL
+                                 group_id bigint NOT NULL,
+                                 deleted boolean default false
 );
 
 CREATE TABLE groupes_posts (
                                id SERIAL       PRIMARY KEY,
                                post_id bigint  NOT NULL,
-                               group_id bigint NOT NULL
+                               group_id bigint NOT NULL,
+                               deleted boolean default false
 );
 
 ALTER TABLE groupes OWNER TO "www-data";
