@@ -1,89 +1,69 @@
 <?php
 
-require_once 'db.php';
+$host = 'localhost';
+$dbname = 'image_db';
+$username = 'postgres';
+$password = 'postgres';
+ 
+$dsn = "pgsql:host=$host;port=5432;dbname=$dbname;user=$username;password=$password";
+
+$dbh = null;
+try {
+    $dbh = new PDO($dsn);
+    if($dbh) {
+        echo "Connecté à $dbname avec succès!";
+    }
+} catch (PDOException $e) {
+    echo $e->getMessage();
+}
 
 $res = null;
-if (isset($_POST['add'])
-    && isset($_POST['nature'])
-    && isset($_POST['texte'])
-    && isset($_POST['id_user'])) {
+if (isset($_POST['create']) // TODO : il faut aussi surement gerer la recupération d'un fichier
+    && isset($_POST['user_id'])
+    && isset($_POST['chemin'])
+    && isset($_POST['nature'])) {
 
-    $stmt = $dbh->prepare('INSERT INTO posts (nature, texte, date_ajout, id_user) VALUES (:nature, :texte, NOW(), :id_user)');
-    $stmt->bindParam(':nature', $_POST['nature'], PDO::PARAM_INT);
-    $stmt->bindParam(':texte', $_POST['texte'], PDO::PARAM_STR);
-    $stmt->bindParam(':id_user', $_POST['id_user'], PDO::PARAM_INT);
-    // retourne true if success, false sinon
-    $res = $stmt->execute() ? "succes" : "echec : " . json_encode($stmt->errorInfo());
-
-} else if (isset($_POST['remove'])
-    && isset($_POST['id_post'])) {
-
-    $stmt = $dbh->prepare('UPDATE posts SET deleted = true WHERE id = ?');
-    $stmt->bindParam(1, $_POST['id_post'], PDO::PARAM_INT);
-    // retourne true if success, false sinon
+    $stmt = $dbh->prepare('INSERT INTO images (user_id, chemin, nature) VALUES (?, ?)');
+    $stmt->bindParam(1, $_POST['user_id'], PDO::PARAM_INT);
+    $stmt->bindParam(2, $_POST['chemin'], PDO::PARAM_STR, 100);
+    $stmt->bindParam(3, $_POST['nature'], PDO::PARAM_INT);
     $res = $stmt->execute();
+} else if(isset($_POST['get']) // image by id
+    && isset($_POST['id'])) {
 
-} else if (isset($_GET['get']) // Pour reccuperer 1 post en particulier
-&& isset($_GET['id_post'])) {
+    $stmt = $dbh->prepare('SELECT * FROM images WHERE id = ?');
 
-    $stmt = $dbh->prepare('SELECT * FROM posts WHERE id_post = ? AND deleted = false');
-    $stmt->bindParam(1, $_GET['id_post'], PDO::PARAM_INT);
-
-    if($stmt->execute()){ // si la requete a marché
+    if($stmt->execute()){ 
         $result = array();
         $tmp = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
         
-        $result["nature"] = $tmp["nature"];
-        $result["texte"] = $tmp["texte"];
-        $result["date_ajout"] = $tmp["date_ajout"];
-        $result["id_user"] = $tmp["id_user"];
-        $result["likes"] = $tmp["likes"];
+        $result['user_id'] = $tmp['user_id'];
+        $result['chemin'] = $tmp['chemin'];
+        $result['nature'] = $tmp['nature'];
 
-        $res = json_encode($result);
-    }
-} else if (isset($_GET['get']) // Pour reccuperer tous les posts d'un user
-&& isset($_GET['id_user'])) {
-
-    $stmt = $dbh->prepare('SELECT * FROM posts WHERE id_user = ? AND deleted = false');
-    $stmt->bindParam(1, $_GET['id_user'], PDO::PARAM_INT);
-
-    if($stmt->execute()){ // si la requete a marché
-        $result = array();
-
-        foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $tmp){
-            $result[$tmp["id"]] = array();
-            $result[$tmp["id"]]["id_post"] = $tmp["id"];
-            $result[$tmp["id"]]["nature"] = $tmp["nature"];
-            $result[$tmp["id"]]["texte"] = $tmp["texte"];
-            $result[$tmp["id"]]["date_ajout"] = $tmp["date_ajout"];
-            $result[$tmp["id"]]["likes"] = $tmp["likes"];
-        }
         $res = json_encode($result);
     } else {
         $res = "ERREUR SQL";
     }
-} else if (isset($_GET['get'])) { // Pour reccuperer tous les posts non supprimés de la BDD
 
-    $stmt = $dbh->prepare('SELECT * FROM posts WHERE deleted = false');
-    $stmt->bindParam(1, $_GET['id_user'], PDO::PARAM_INT);
+} else if(isset($_POST['get']) // images by user
+&& isset($_POST['user_id'])) {
 
-    if($stmt->execute()){ // si la requete a marché
+    $stmt = $dbh->prepare('SELECT * FROM images WHERE user_id = ?');
+
+    if($stmt->execute()){ 
         $result = array();
+        $tmp = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
         
-        foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $tmp){
-            $result[$tmp["id"]] = array();
-            $result[$tmp["id"]]["nature"] = $tmp["nature"];
-            $result[$tmp["id"]]["texte"] = $tmp["texte"];
-            $result[$tmp["id"]]["date_ajout"] = $tmp["date_ajout"];
-            $result[$tmp["id"]]["id_user"] = $tmp["id_user"];
-            $result[$tmp["id"]]["likes"] = $tmp["likes"];
-        }
+        $result['user_id'] = $tmp['user_id'];
+        $result['chemin'] = $tmp['chemin'];
+        $result['nature'] = $tmp['nature'];
+
         $res = json_encode($result);
     } else {
         $res = "ERREUR SQL";
     }
-} else {
-    $res = "AUCUNE ACTION DISPONIBLE POUR CETTE REQUETE";
+
 }
 ?>
 
@@ -97,6 +77,6 @@ if (isset($_POST['add'])
     <title>Index</title>
 </head>
 <body>
-    <?php echo $res ?>
+    <? $res ?>
 </body>
 </html>

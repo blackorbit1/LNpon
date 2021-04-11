@@ -13,8 +13,8 @@ if($TESTS){
     $db_type = 'pgsql';
     $host = 'localhost';
     $dbname = 'images_db';
-    $username = 'postgres';
-    $password = 'postgres';
+    $username = 'www-data';
+    $password = 'www-data';
     $port = '5432';
 }
 
@@ -22,10 +22,8 @@ $dsn = "$db_type:host=$host;port=$port;dbname=$dbname;user=$username;password=$p
 $dbh = null;
 try {
     $dbh = new PDO($dsn);
-    if($dbh) {
-        echo "Connecté à $dbname avec succès!";
-    }
-} catch (PDOException $e) {
+}
+catch (PDOException $e) {
     echo $e->getMessage();
 }
 
