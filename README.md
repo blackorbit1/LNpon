@@ -9,7 +9,7 @@ Réseau social en micro services.
 - [x] posts
 - [ ] images
 - [x] reactions
-- [ ] relations
+- [x] relations
 - [x] groupes
 - [ ] gateway
 
