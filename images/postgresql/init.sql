@@ -7,4 +7,4 @@ CREATE TABLE images (
     nature int          NOT NULL
 );
 
-ALTER TABLE auth OWNER TO "www-data";
+ALTER TABLE images OWNER TO "www-data";
