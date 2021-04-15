@@ -36,4 +36,3 @@ services:
 networks:
   images_frontend:
   images_backend:
-
