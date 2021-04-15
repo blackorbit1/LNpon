@@ -1,28 +1,28 @@
 <?php
-
+$output = ['status' => false];
 if (isset($_POST['action'])
     && $_POST['action'] === 'upload_image'
     && !empty($_POST['user_id'])
     && !empty($_POST['nature'])) {
 
     if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+        $filename = $_FILES['userfile']['name'];
 
-        if (move_uploaded_file($_FILES['avatar']['tmp_name'], "/var/www/uploads/$_FILES['userfile']['name']")) {
-            $stmt = $dbh->prepare('INSERT INTO images (user_id, chemin, nature) VALUES (?, ?)');
-            $res = $stmt->execute([$_POST['user_id'], "/var/www/uploads/$name", $_POST['nature']]);
+        if (move_uploaded_file($_FILES['avatar']['tmp_name'], "/var/www/uploads/$filename")) {
+            $stmt = $dbh->prepare('INSERT INTO images (image_id, user_id, nature) OUTPUT INSERTED.image_id VALUES (default, ?, ?) RETURNING image_id');
+            $res = $stmt->execute([$_POST['user_id'], "/var/www/uploads/$filename", $_POST['nature']]);
 
             if ($res) {
-                $output = ['status' => true, 'filename' => $_FILES['userfile']['name'], 'user_id' => $_POST['user_id']];
+                $temp = $stmt->fetch(PDO::FETCH_ASSOC);
+                $output = [
+                    'status' => true,
+                    'filename' => $_FILES['userfile']['name'],
+                    'user_id' => $_POST['user_id'],
+                    'image_id' => $temp['image_id']
+                ];
             }
-            else {
-                $output = ['status' => false];
-            }
-        else {
-            $output = ['status' => false];
         }
     }
-
-    $output = ['status' => false];
 }
 else if (isset($_POST['action'])
         && $_POST['action'] === 'get_image'
@@ -33,9 +33,6 @@ else if (isset($_POST['action'])
     if ($stmt->execute($_POST['image_id'])) {
         $output = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    else {
-        $output = ['status' => false];
-    }
 }
 else if (isset($_POST['action'])
         && $_POST['action'] === 'get_image'
@@ -45,9 +42,6 @@ else if (isset($_POST['action'])
 
     if ($stmt->execute($_POST['user_id'])) {
         $output = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    else {
-        $output = ['status' => false];
     }
 }
 
