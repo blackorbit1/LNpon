@@ -1,15 +1,28 @@
 <?php
 
-if (isset($_POST['create']) // TODO : il faut aussi surement gerer la recupération d'un fichier
-    && isset($_POST['user_id'])
-    && isset($_POST['chemin'])
-    && isset($_POST['nature'])) {
+if (isset($_POST['action'])
+    && $_POST['action'] === 'upload_image'
+    && !empty($_POST['user_id'])
+    && !empty($_POST['nature'])) {
 
-    $stmt = $dbh->prepare('INSERT INTO images (user_id, chemin, nature) VALUES (?, ?)');
-    $stmt->bindParam(1, $_POST['user_id'], PDO::PARAM_INT);
-    $stmt->bindParam(2, $_POST['chemin'], PDO::PARAM_STR, 100);
-    $stmt->bindParam(3, $_POST['nature'], PDO::PARAM_INT);
-    $res = $stmt->execute();
+    if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+
+        if (move_uploaded_file($_FILES['avatar']['tmp_name'], "/var/www/uploads/$_FILES['userfile']['name']")) {
+            $stmt = $dbh->prepare('INSERT INTO images (user_id, chemin, nature) VALUES (?, ?)');
+            $res = $stmt->execute([$_POST['user_id'], "/var/www/uploads/$name", $_POST['nature']]);
+
+            if ($res) {
+                $output = ['status' => true, 'filename' => $_FILES['userfile']['name'], 'user_id' => $_POST['user_id']];
+            }
+            else {
+                $output = ['status' => false];
+            }
+        else {
+            $output = ['status' => false];
+        }
+    }
+
+    $output = ['status' => false];
 }
 else if (isset($_POST['action'])
         && $_POST['action'] === 'get_image'
