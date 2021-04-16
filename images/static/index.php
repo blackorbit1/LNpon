@@ -12,7 +12,7 @@ if (isset($_POST['action'])
         $filename = basename($_FILES['avatar']['name']);
 
         if (move_uploaded_file($_FILES['avatar']['tmp_name'], "/var/www/uploads/$filename")) {
-            $stmt = $dbh->prepare('INSERT INTO images (image_id, user_id, nature) OUTPUT INSERTED.image_id VALUES (default, ?, ?) RETURNING image_id');
+            $stmt = $dbh->prepare('INSERT INTO images (image_id, user_id, nature) VALUES (default, ?, ?) RETURNING image_id');
             $res = $stmt->execute([$_POST['user_id'], "/var/www/uploads/$filename", $_POST['nature']]);
 
             if ($res) {
