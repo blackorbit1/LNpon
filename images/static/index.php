@@ -1,4 +1,7 @@
 <?php
+
+require_once 'db.php';
+
 $output = ['status' => false];
 if (isset($_POST['action'])
     && $_POST['action'] == 'upload_image'
