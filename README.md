@@ -5,7 +5,7 @@ Réseau social en micro services.
 ## Services:
 
 - [x] users
-- [ ] auth
+- [x] auth
 - [x] posts
 - [ ] images
 - [x] reactions
