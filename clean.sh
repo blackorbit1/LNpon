@@ -8,3 +8,5 @@ docker-compose -f reactions/docker-compose.yml rm -f -s -v
 docker-compose -f relations/docker-compose.yml rm -f -s -v
 docker-compose -f users/docker-compose.yml rm -f -s -v
 docker-compose -f gateway/docker-compose.yml rm -f -s -v
+
+docker system prune -f
